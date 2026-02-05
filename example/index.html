@@ -21,19 +21,19 @@
   </style>
 </head>
 <body>
-  <h1 id="h">VERSION 3</h1>
+  <h1 id="h">VERSION 0</h1>
   <script>
     const path = require('path')
     const PearContainer = require('pear-container')
     const app = new PearContainer({ app: getApp(), ...require('./pear.json') })
 
     app.on('updating', function () {
-      document.getElementById('h').innerText = 'Updating...'
+      document.getElementById('h').innerText = 'VERSION 0: Updating...'
     })
 
     app.on('updated', function () {
       app.apply()
-      document.getElementById('h').innerText = 'Updated! Restart for latest'
+      document.getElementById('h').innerText = 'VERSION 0: Updated! Restart for latest'
     })
 
     function getApp() {
