@@ -50,8 +50,7 @@ module.exports = class PearContainer extends ReadyResource {
       this.swarm.on('connection', connection => this.store.replicate(connection))
       this.swarm.join(this.drive.core.discoveryKey, { client: true, server: false })
 
-      if (this.updateable()) this._updateBackground()
-
+      this._updateBackground()
       this.drive.core.on('append', () => this._updateBackground())
     }
   }
@@ -61,10 +60,6 @@ module.exports = class PearContainer extends ReadyResource {
     if (this.checkout) await this.checkout.close()
     await this.store.destroy()
     await this.swarm.destroy()
-  }
-
-  updateable() {
-    return this.drive.core.length > this.length
   }
 
   async apply() {
@@ -82,8 +77,6 @@ module.exports = class PearContainer extends ReadyResource {
 
   async _update() {
     if (this.updating) return
-    if (this.drive.core.length <= this.length) return
-
     this.updating = true
 
     const length = this.drive.core.length
@@ -119,7 +112,7 @@ module.exports = class PearContainer extends ReadyResource {
     this.updated = true
     this.emit('updated')
 
-    if (this.updateable()) this._updateBackground()
+    if (this.drive.core.length > length) this._updateBackground()
   }
 }
 

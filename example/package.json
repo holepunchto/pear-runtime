@@ -20,6 +20,6 @@
     }
   },
   "dependencies": {
-    "pear-container": "^0.0.0"
+    "pear-container": "^0.0.1"
   }
 }
