@@ -14,6 +14,7 @@ module.exports = class PearContainer extends ReadyResource {
     const dir = config.dir || '/tmp/pear-container/my-app'
 
     this.dir = dir
+    this.version = config.version || 0
     this.storage = path.join(dir, 'app-storage')
     this.app = config.app
     this.name = this.app && path.basename(this.app)
@@ -84,21 +85,31 @@ module.exports = class PearContainer extends ReadyResource {
     if (this.drive.core.length <= this.length) return
 
     this.updating = true
-    this.emit('updating')
 
     const length = this.drive.core.length
     const id = length + '.' + this.drive.core.fork
     const next = path.join(this.dir, 'next', id)
     const co = this.drive.checkout(length)
-    const local = new Localdrive(next)
 
     this.checkout = co
+
+    const manifest = await co.get('/pear.json')
+    if (!manifest || JSON.parse(manifest).version <= this.version) {
+      this.updating = false
+      this.checkout = null
+      await co.close()
+    }
+
+    const local = new Localdrive(next)
+
+    this.emit('updating')
 
     for await (const data of co.mirror(local)) {
       this.emit('updating-delta', data)
     }
 
     await co.close()
+    await local.close()
 
     this.checkout = null
     this.length = length
