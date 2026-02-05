@@ -1,0 +1,31 @@
+{
+  "name": "pear-container",
+  "version": "0.0.0",
+  "description": "Standalone Pear containers",
+  "license": "Apache-2.0",
+  "author": "Holepunch Inc",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "imports": {
+    "fs": {
+      "bare": "bare-fs",
+      "default": "fs"
+    },
+    "path": {
+      "bare": "bare-path",
+      "default": "path"
+    }
+  },
+  "dependencies": {
+    "bare-fs": "^4.5.3",
+    "bare-path": "^3.0.0",
+    "corestore": "^7.8.0",
+    "fs-native-extensions": "^1.4.5",
+    "hyperdrive": "^13.2.1",
+    "hyperswarm": "^4.16.0",
+    "localdrive": "^2.2.0",
+    "ready-resource": "^1.2.0"
+  }
+}
