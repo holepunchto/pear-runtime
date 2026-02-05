@@ -91,6 +91,7 @@ module.exports = class PearContainer extends ReadyResource {
       this.updating = false
       this.checkout = null
       await co.close()
+      return
     }
 
     const local = new Localdrive(next)
