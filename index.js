@@ -47,7 +47,7 @@ module.exports = class PearContainer extends ReadyResource {
         this.swarm = new Hyperswarm({ keyPair })
       }
 
-      this.swarm.on('connection', connection => this.store.replicate(connection))
+      this.swarm.on('connection', (connection) => this.store.replicate(connection))
       this.swarm.join(this.drive.core.discoveryKey, { client: true, server: false })
 
       this._updateBackground()
@@ -117,4 +117,4 @@ module.exports = class PearContainer extends ReadyResource {
   }
 }
 
-function noop () {}
+function noop() {}

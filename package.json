@@ -8,6 +8,10 @@
   "files": [
     "index.js"
   ],
+  "scripts": {
+    "format": "prettier --write .",
+    "test": "prettier --check . && lunte"
+  },
   "imports": {
     "fs": {
       "bare": "bare-fs",
@@ -27,5 +31,10 @@
     "hyperswarm": "^4.16.0",
     "localdrive": "^2.2.0",
     "ready-resource": "^1.2.0"
+  },
+  "devDependencies": {
+    "lunte": "^1.6.0",
+    "prettier": "^3.8.1",
+    "prettier-config-holepunch": "^2.0.0"
   }
 }
