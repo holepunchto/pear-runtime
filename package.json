@@ -1,7 +1,7 @@
 {
   "name": "pear-runtime",
   "version": "0.1.0",
-  "description": "Embeddable Pear runtime",
+  "description": "Embeddable Pear Runtime",
   "license": "Apache-2.0",
   "author": "Holepunch Inc",
   "main": "index.js",

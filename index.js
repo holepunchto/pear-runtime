@@ -67,7 +67,7 @@ module.exports = class PearRuntime extends ReadyResource {
     await this.swarm.destroy()
   }
 
-  async apply() {
+  async applyUpdate() {
     if (!this.updated || this.applied || !this.bundled) return
     this.applied = true
 
