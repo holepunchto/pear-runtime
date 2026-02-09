@@ -3,6 +3,10 @@
 Embeddable Pear runtime that gives you P2P OTA updates, bare workers and storage
 APIs inside any JS (non-browser) based app
 
+```sh
+npm install pear-runtime
+```
+
 ## API
 
 #### `const runtime = new PearRuntime(...)`
