@@ -37,6 +37,12 @@
         document.getElementById('h').innerText = 'VERSION 1: Updated! Restart for latest'
       })
 
+      const worker = app.run(require.resolve('./bare.js'))
+
+      worker.stdout.on('data', function(data) {
+        console.log('worker:', data.toString())
+      })
+
       function getApp() {
         if (process.cwd() !== '/') return null
         return path.join(process.resourcesPath, '../..')

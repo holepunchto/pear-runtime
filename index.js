@@ -6,6 +6,7 @@ const path = require('path')
 const fs = require('fs')
 const fsx = require('fs-native-extensions')
 const ReadyResource = require('ready-resource')
+const Sidecar = require('bare-sidecar')
 
 module.exports = class PearContainer extends ReadyResource {
   constructor(config) {
@@ -34,6 +35,10 @@ module.exports = class PearContainer extends ReadyResource {
     this.applied = false
 
     this.ready().catch(noop)
+  }
+
+  run(entrypoint) {
+    return new Sidecar(entrypoint)
   }
 
   async _open() {
