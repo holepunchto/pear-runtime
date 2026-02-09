@@ -8,7 +8,7 @@ const fsx = require('fs-native-extensions')
 const ReadyResource = require('ready-resource')
 const Sidecar = require('bare-sidecar')
 
-module.exports = class PearContainer extends ReadyResource {
+module.exports = class PearRuntime extends ReadyResource {
   constructor(config) {
     super()
 
@@ -24,7 +24,7 @@ module.exports = class PearContainer extends ReadyResource {
     this.fork = config.fork || 0
     this.link = 'pear://' + this.key + '.' + this.fork + '.' + this.length
     this.bundled = config.bundled || !!this.app
-    this.store = config.store || new Corestore(path.join(dir, 'corestore'))
+    this.store = config.store || new Corestore(path.join(dir, 'pear-runtime/corestore'))
     this.drive = new Hyperdrive(this.store, this.key)
     this.swarm = config.swarm || null
     this.next = null
@@ -45,7 +45,7 @@ module.exports = class PearContainer extends ReadyResource {
     await this.drive.ready()
 
     if (this.bundled) {
-      await fs.promises.rm(path.join(this.dir, 'next'), { recursive: true, force: true })
+      await fs.promises.rm(path.join(this.dir, 'pear-runtime/next'), { recursive: true, force: true })
 
       if (!this.swarm) {
         const keyPair = await this.store.createKeyPair('pear-container')
@@ -86,7 +86,7 @@ module.exports = class PearContainer extends ReadyResource {
 
     const length = this.drive.core.length
     const id = length + '.' + this.drive.core.fork
-    const next = path.join(this.dir, 'next', id)
+    const next = path.join(this.dir, 'pear-runtime/next', id)
     const co = this.drive.checkout(length)
 
     this.checkout = co
