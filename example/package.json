@@ -20,6 +20,6 @@
     }
   },
   "dependencies": {
-    "pear-container": "^0.0.3"
+    "pear-runtime": "^0.1.0"
   }
 }
