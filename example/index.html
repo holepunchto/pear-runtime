@@ -25,7 +25,7 @@
     <h1 id="h">VERSION 1</h1>
     <script>
       const path = require('path')
-      const PearContainer = require('pear-container')
+      const PearRuntime = require('pear-runtime')
       const app = new PearContainer({ app: getApp(), ...require('./pear.json') })
 
       app.on('updating', function () {
