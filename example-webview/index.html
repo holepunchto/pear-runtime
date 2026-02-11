@@ -25,8 +25,8 @@
     <h1 id="h">VERSION 1</h1>
     <script>
       const path = require('path')
-      const PearContainer = require('pear-container')
-      const app = new PearContainer({ app: getApp(), ...require('./pear.json') })
+      const PearRuntime = require('pear-runtime')
+      const app = new PearRuntime({ app: getApp(), ...require('./pear.json') })
 
       app.on('updating', function () {
         document.getElementById('h').innerText = 'VERSION 1: Updating...'
@@ -35,6 +35,12 @@
       app.on('updated', function () {
         app.apply()
         document.getElementById('h').innerText = 'VERSION 1: Updated! Restart for latest'
+      })
+
+      const worker = app.run(require.resolve('./bare.js'))
+
+      worker.stdout.on('data', function(data) {
+        console.log('worker:', data.toString())
       })
 
       function getApp() {

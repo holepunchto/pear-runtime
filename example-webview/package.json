@@ -23,6 +23,6 @@
   },
   "dependencies": {
     "bare-native": "^0.1.2",
-    "pear-container": "^0.0.3"
+    "pear-runtime": "^0.1.0"
   }
 }
