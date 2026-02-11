@@ -38,6 +38,34 @@ Apply the update. Only valid post `updated`. On next app restart the new update 
 
 Shut it down. You should do this when closing your app for best performance.
 
+## Making updates
+
+VERY EXPERIMENTAL, MOST DEFINITELY WILL CHANGE.
+
+First allocate a key if you havent. With `pear` cli
+
+```
+pear touch
+```
+
+Store this key in `pear.json` in your project. See example for how it should look.
+Set a version also, first version can be any number but `0` is good.
+
+Build your electron app. Take the .app produced and make a folder that looks like this
+
+```
+pear.json # same one from your app build
+my-app.app # app name should be the same as the app name you distribute
+```
+
+Now go to this folder and stage this onto your key with `pear stage`
+
+```
+pear stage pear://{key-from-touch}
+```
+
+Now seed it. Any build out there on a lower version will trigger the update flow
+
 ## LICENSE
 
 Apache-2.0
