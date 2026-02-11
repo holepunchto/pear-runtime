@@ -1,8 +1,9 @@
 {
   "name": "example",
   "version": "1.0.0",
+  "upgrade": "pear://qxenz5wmspmryjc13m9yzsqj1conqotn8fb4ocbufwtz9mtbqq5o",
   "description": "",
-  "license": "ISC",
+  "license": "",
   "author": "",
   "type": "commonjs",
   "main": "index.js",

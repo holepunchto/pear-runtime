@@ -7,22 +7,25 @@ const fs = require('fs')
 const fsx = require('fs-native-extensions')
 const ReadyResource = require('ready-resource')
 const Sidecar = require('bare-sidecar')
+const link = require('pear-link')
+const hid = require('hypercore-id-encoding')
 
 module.exports = class PearRuntime extends ReadyResource {
   constructor(config) {
     super()
 
     const dir = config.dir || '/tmp/pear-container/my-app'
-
+    if (!config.upgrade) throw new Error('upgrade link required')
+    const { drive: upgrade } = link.parse(config.upgrade)
     this.dir = dir
     this.version = config.version || 0
     this.storage = path.join(dir, 'app-storage')
     this.app = config.app
     this.name = this.app && path.basename(this.app)
-    this.key = config.key
-    this.length = config.length
-    this.fork = config.fork || 0
-    this.link = 'pear://' + this.fork + '.' + this.length + '.' + this.key
+    this.key = hid.decode(upgrade.key)
+    this.length = upgrade.length || 0
+    this.fork = upgrade.fork || 0
+    this.link = link.serialize({ drive: { fork: this.fork, length: this.length, key: this.key }})
     this.bundled = config.bundled || !!this.app
     this.store = config.store || new Corestore(path.join(dir, 'pear-runtime/corestore'))
     this.drive = new Hyperdrive(this.store, this.key)
@@ -91,7 +94,7 @@ module.exports = class PearRuntime extends ReadyResource {
 
     this.checkout = co
 
-    const manifest = await co.get('/pear.json')
+    const manifest = await co.get('/package.json')
     if (!manifest || JSON.parse(manifest).version <= this.version) {
       this.updating = false
       this.checkout = null
