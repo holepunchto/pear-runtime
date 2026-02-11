@@ -26,7 +26,9 @@
     <script>
       const path = require('path')
       const PearRuntime = require('pear-runtime')
-      const app = new PearRuntime({ app: getApp(), ...require('./pear.json') })
+      const { version, upgrade } = require('./package.json')
+
+      const app = new PearRuntime({ app: getApp(), version, upgrade })
 
       app.on('updating', function () {
         document.getElementById('h').innerText = 'VERSION 1: Updating...'
