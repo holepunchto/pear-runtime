@@ -13,7 +13,7 @@ npm install pear-runtime
 
 TODO
 
-#### `worker = runtime.run(path)`
+#### `worker = runtime.run(path, args = [], opts = {})`
 
 Start a bare worker. Worker is a duplex stream.
 Stdio is available at worker.stdin, worker.stdout, worker.stderr.
