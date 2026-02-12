@@ -95,7 +95,7 @@ module.exports = class PearRuntime extends ReadyResource {
     this.checkout = co
 
     const manifest = await co.get('/package.json')
-    if (!manifest || JSON.parse(manifest).version <= this.version) {
+    if (!manifest || JSON.parse(manifest).version === this.version) {
       this.updating = false
       this.checkout = null
       await co.close()
