@@ -13,10 +13,12 @@ npm install pear-runtime
 
 TODO
 
-#### `worker = runtime.run(path, args = [], opts = {})`
+#### `const IPC <stream.Duplex> = runtime.run(path, args = [], opts = {})`
 
-Start a bare worker. Worker is a duplex stream.
-Stdio is available at worker.stdin, worker.stdout, worker.stderr.
+Start a bare worker. IPC is a duplex stream.
+Stdio is available at IPC.stdin, IPC.stdout, IPC.stderr.
+
+`Bare.IPC` to access stream in child.
 
 #### `runtime.storage`
 
