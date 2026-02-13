@@ -1,11 +1,17 @@
 # pear-runtime
 
-Embeddable Pear runtime that gives you P2P OTA updates, bare workers and storage
-APIs inside any JS (non-browser) based app
+> Embeddable Pear runtime for P2P OTA updates, Bare workers and storage
+> APIs inside any JS (non-browser) based app
 
 ```sh
 npm install pear-runtime
 ```
+
+## Features
+
+- Peer-to-Peer Over-the-Air (P2P OTA) updates
+- Run workers in [Bare Runtime](https://github.com/holepunchto/bare)
+- Application storage management
 
 ## API
 
@@ -13,10 +19,14 @@ npm install pear-runtime
 
 TODO
 
-#### `worker = runtime.run(path, args = [], opts = {})`
+#### `IPC <stream.Duplex> = runtime.run(path, args = [], opts = {})`
 
-Start a bare worker. Worker is a duplex stream.
-Stdio is available at worker.stdin, worker.stdout, worker.stderr.
+Start a [bare](https://github.com/holepunchto/bare) worker.
+Returns a duplex stream, the `IPC` pipe.
+
+In the worker, `Bare.IPC` is the other end of the pipe.
+
+Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
 
 #### `runtime.storage`
 
@@ -42,29 +52,30 @@ Shut it down. You should do this when closing your app for best performance.
 
 VERY EXPERIMENTAL, MOST DEFINITELY WILL CHANGE.
 
-First allocate a key if you havent. With `pear` cli
+First allocate a pear link if you haven't using [`pear`](https://github.com/holepunchto/pear):
 
 ```
 pear touch
 ```
 
-Store this key in `pear.json` in your project. See example for how it should look.
-Set a version also, first version can be any number but `0` is good.
+Store this link in the `package.json` `upgrade` field of a project. See [example](./example/package.json).
 
-Build your electron app. Take the .app produced and make a folder that looks like this
-
-```
-pear.json # same one from your app build
-my-app.app # app name should be the same as the app name you distribute
-```
-
-Now go to this folder and stage this onto your key with `pear stage`
+Build an app. Take the distributable (e.g .app) produced and make a deployment folder with the following structure:
 
 ```
-pear stage pear://{key-from-touch}
+/package.json
+/by-arch
+  /app
+    /[...platform-arch]
 ```
 
-Now seed it. Any build out there on a lower version will trigger the update flow
+Now go to this folder and stage this onto the link with `pear stage`
+
+```
+pear stage {link-from-touch}
+```
+
+Now seed it. Any build out there on a lower version will trigger the update flow.
 
 ## LICENSE
 
