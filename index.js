@@ -9,6 +9,7 @@ const ReadyResource = require('ready-resource')
 const Sidecar = require('bare-sidecar')
 const link = require('pear-link')
 const hid = require('hypercore-id-encoding')
+const { platform, arch } = require('which-runtime')
 
 module.exports = class PearRuntime extends ReadyResource {
   constructor(config) {
@@ -75,7 +76,10 @@ module.exports = class PearRuntime extends ReadyResource {
     this.applied = true
 
     // mac only for now, linux similar, windows, more pain
-    await fsx.swap(path.join(this.next, this.name), this.app)
+    await fsx.swap(
+      path.join(this.next, 'by-arch', platform + '-' + arch, 'app', this.name),
+      this.app
+    )
     await fs.promises.rm(this.next, { recursive: true, force: true })
   }
 
