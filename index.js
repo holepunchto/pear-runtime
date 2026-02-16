@@ -115,11 +115,16 @@ module.exports = class PearRuntime extends ReadyResource {
       this.emit('updating-delta', data)
     }
 
-    await fsx.swap(
-      path.join(next, 'by-arch', host, 'app', this.name),
-      path.join(next, this.name)
-    )
-    await fs.promises.rm(next, { recursive: true, force: true })
+    try {
+      await fs.promises.rename(
+        path.join(next, 'by-arch', host, 'app', this.name),
+        path.join(next, this.name)
+      )
+    } catch (err) {
+      if (err.code !== 'ENOTEMPTY') throw err
+      await fsx.swap(path.join(next, 'by-arch', host, 'app', this.name), path.join(next, this.name))
+      await fs.promises.rm(next, { recursive: true, force: true })
+    }
 
     await co.close()
     await local.close()
