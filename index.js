@@ -108,10 +108,16 @@ module.exports = class PearRuntime extends ReadyResource {
     const local = new Localdrive(next)
 
     this.emit('updating')
-    const prefix = { from: '/by-arch/' + require.host + '/app/' + this.name, to: '/' + this.name }
+    const prefix = '/by-arch/' + require.host + '/app/' + this.name
     for await (const data of co.mirror(local, { prefix })) {
       this.emit('updating-delta', data)
     }
+
+    await fsx.swap(
+      path.join(next, 'by-arch', require.host, 'app', this.name),
+      path.join(next, this.name)
+    )
+    await fs.promises.rm(next, { recursive: true, force: true })
 
     await co.close()
     await local.close()
