@@ -25,7 +25,7 @@ module.exports = class PearRuntime extends ReadyResource {
     this.key = hid.decode(upgrade.key)
     this.length = upgrade.length || 0
     this.fork = upgrade.fork || 0
-    this.link = link.serialize({ drive: { fork: this.fork, length: this.length, key: this.key }})
+    this.link = link.serialize({ drive: { fork: this.fork, length: this.length, key: this.key } })
     this.bundled = config.bundled || !!this.app
     this.store = config.store || new Corestore(path.join(dir, 'pear-runtime/corestore'))
     this.drive = new Hyperdrive(this.store, this.key)
@@ -48,7 +48,10 @@ module.exports = class PearRuntime extends ReadyResource {
     await this.drive.ready()
 
     if (this.bundled) {
-      await fs.promises.rm(path.join(this.dir, 'pear-runtime/next'), { recursive: true, force: true })
+      await fs.promises.rm(path.join(this.dir, 'pear-runtime/next'), {
+        recursive: true,
+        force: true
+      })
 
       if (!this.swarm) {
         const keyPair = await this.store.createKeyPair('pear-container')

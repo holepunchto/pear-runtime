@@ -1,11 +1,28 @@
 # pear-runtime
 
-> Embeddable Pear runtime for P2P OTA updates, Bare workers and storage
-> APIs inside any JS (non-browser) based app
+> Embeddable Runtime library for [Pear](https://docs.pears.com) with P2P OTA updates, Bare workers and storage APIs
 
 ```sh
 npm install pear-runtime
 ```
+
+This module integrates Pear into JavaScript-based Desktop applications.
+
+See [pear-mobile](https://github.com/holepunchto/pear-mobile) for Pear's embeddable runtime module for Mobile Devices.
+
+## Quick Starts
+
+### Electron
+
+```sh
+git clone https://github.com/holepunchto/hello-pear-electron
+```
+
+For end-to-end instructions from building to deploying with [Pear](https://docs.pears.com) see [hello-pear-electron](https://github.com/holepunchto/hello-pear-electron/) `README.md`.
+
+### WebView
+
+> Coming Soon
 
 ## Features
 
@@ -54,7 +71,7 @@ VERY EXPERIMENTAL, MOST DEFINITELY WILL CHANGE.
 
 First allocate a pear link if you haven't using [`pear`](https://github.com/holepunchto/pear):
 
-```
+```sh
 pear touch
 ```
 
@@ -71,7 +88,7 @@ Build an app. Take the distributable (e.g .app) produced and make a deployment f
 
 Now go to this folder and stage this onto the link with `pear stage`
 
-```
+```sh
 pear stage {link-from-touch}
 ```
 
