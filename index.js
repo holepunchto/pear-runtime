@@ -8,7 +8,9 @@ const fsx = require('fs-native-extensions')
 const ReadyResource = require('ready-resource')
 const Sidecar = require('bare-sidecar')
 const link = require('pear-link')
+const { platform, arch } = require('which-runtime')
 const hid = require('hypercore-id-encoding')
+const host = platform + '-' + arch
 
 module.exports = class PearRuntime extends ReadyResource {
   constructor(config) {
@@ -108,13 +110,13 @@ module.exports = class PearRuntime extends ReadyResource {
     const local = new Localdrive(next)
 
     this.emit('updating')
-    const prefix = '/by-arch/' + require.host + '/app/' + this.name
+    const prefix = '/by-arch/' + host + '/app/' + this.name
     for await (const data of co.mirror(local, { prefix })) {
       this.emit('updating-delta', data)
     }
 
     await fsx.swap(
-      path.join(next, 'by-arch', require.host, 'app', this.name),
+      path.join(next, 'by-arch', host, 'app', this.name),
       path.join(next, this.name)
     )
     await fs.promises.rm(next, { recursive: true, force: true })
