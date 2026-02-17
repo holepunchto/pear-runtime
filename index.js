@@ -10,25 +10,26 @@ const Sidecar = require('bare-sidecar')
 const link = require('pear-link')
 const hid = require('hypercore-id-encoding')
 const { platform, arch } = require('which-runtime')
+const host = platform + '-' + arch
 
 module.exports = class PearRuntime extends ReadyResource {
   constructor(config) {
     super()
 
-    const dir = config.dir || '/tmp/pear-container/my-app'
+    if (!config.dir) throw new Error('dir required')
     if (!config.upgrade) throw new Error('upgrade link required')
     const { drive: upgrade } = link.parse(config.upgrade)
-    this.dir = dir
+    this.dir = config.dir
     this.version = config.version || 0
-    this.storage = path.join(dir, 'app-storage')
+    this.storage = path.join(this.dir, 'app-storage')
     this.app = config.app
     this.name = this.app && path.basename(this.app)
     this.key = hid.decode(upgrade.key)
     this.length = upgrade.length || 0
     this.fork = upgrade.fork || 0
-    this.link = link.serialize({ drive: { fork: this.fork, length: this.length, key: this.key }})
+    this.link = link.serialize({ drive: { fork: this.fork, length: this.length, key: this.key } })
     this.bundled = config.bundled || !!this.app
-    this.store = config.store || new Corestore(path.join(dir, 'pear-runtime/corestore'))
+    this.store = config.store || new Corestore(path.join(this.dir, 'pear-runtime/corestore'))
     this.drive = new Hyperdrive(this.store, this.key)
     this.swarm = config.swarm || null
     this.next = null
@@ -49,7 +50,10 @@ module.exports = class PearRuntime extends ReadyResource {
     await this.drive.ready()
 
     if (this.bundled) {
-      await fs.promises.rm(path.join(this.dir, 'pear-runtime/next'), { recursive: true, force: true })
+      await fs.promises.rm(path.join(this.dir, 'pear-runtime/next'), {
+        recursive: true,
+        force: true
+      })
 
       if (!this.swarm) {
         const keyPair = await this.store.createKeyPair('pear-container')
@@ -109,9 +113,20 @@ module.exports = class PearRuntime extends ReadyResource {
     const local = new Localdrive(next)
 
     this.emit('updating')
-
-    for await (const data of co.mirror(local)) {
+    const prefix = '/by-arch/' + host + '/app/' + this.name
+    for await (const data of co.mirror(local, { prefix })) {
       this.emit('updating-delta', data)
+    }
+
+    try {
+      await fs.promises.rename(
+        path.join(next, 'by-arch', host, 'app', this.name),
+        path.join(next, this.name)
+      )
+    } catch (err) {
+      if (err.code !== 'ENOTEMPTY') throw err
+      await fsx.swap(path.join(next, 'by-arch', host, 'app', this.name), path.join(next, this.name))
+      await fs.promises.rm(next, { recursive: true, force: true })
     }
 
     await co.close()
