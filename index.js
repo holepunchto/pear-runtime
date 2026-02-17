@@ -8,8 +8,8 @@ const fsx = require('fs-native-extensions')
 const ReadyResource = require('ready-resource')
 const Sidecar = require('bare-sidecar')
 const link = require('pear-link')
-const { platform, arch } = require('which-runtime')
 const hid = require('hypercore-id-encoding')
+const { platform, arch } = require('which-runtime')
 const host = platform + '-' + arch
 
 module.exports = class PearRuntime extends ReadyResource {
@@ -80,7 +80,10 @@ module.exports = class PearRuntime extends ReadyResource {
     this.applied = true
 
     // mac only for now, linux similar, windows, more pain
-    await fsx.swap(path.join(this.next, this.name), this.app)
+    await fsx.swap(
+      path.join(this.next, 'by-arch', host, 'app', this.name),
+      this.app
+    )
     await fs.promises.rm(this.next, { recursive: true, force: true })
   }
 
@@ -113,17 +116,6 @@ module.exports = class PearRuntime extends ReadyResource {
     const prefix = '/by-arch/' + host + '/app/' + this.name
     for await (const data of co.mirror(local, { prefix })) {
       this.emit('updating-delta', data)
-    }
-
-    try {
-      await fs.promises.rename(
-        path.join(next, 'by-arch', host, 'app', this.name),
-        path.join(next, this.name)
-      )
-    } catch (err) {
-      if (err.code !== 'ENOTEMPTY') throw err
-      await fsx.swap(path.join(next, 'by-arch', host, 'app', this.name), path.join(next, this.name))
-      await fs.promises.rm(next, { recursive: true, force: true })
     }
 
     await co.close()
