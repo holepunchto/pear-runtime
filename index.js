@@ -80,10 +80,7 @@ module.exports = class PearRuntime extends ReadyResource {
     this.applied = true
 
     // mac only for now, linux similar, windows, more pain
-    await fsx.swap(
-      path.join(this.next, 'by-arch', host, 'app', this.name),
-      this.app
-    )
+    await fsx.swap(path.join(this.next, 'by-arch', host, 'app', this.name), this.app)
     await fs.promises.rm(this.next, { recursive: true, force: true })
   }
 
