@@ -15,10 +15,8 @@ const host = platform + '-' + arch
 module.exports = class PearRuntime extends ReadyResource {
   constructor(config) {
     super()
-    this.updates = config.updates ?? true
-
+    this.updates = !!config.update && config.updates !== false
     if (!config.dir) throw new Error('dir required')
-    if (this.updates && !config.upgrade) throw new Error('upgrade link required')
 
     this.dir = config.dir
     this.version = config.version || 0
