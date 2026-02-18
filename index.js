@@ -11,7 +11,7 @@ module.exports = class PearRuntime extends PearRuntimeUpdater {
     super({ updates: true, ...config })
     if (!config.dir) throw new Error('dir required')
 
-    this.dir = config.dir
+    if (this.dir === undefined) this.dir = config.dir
     this.storage = path.join(this.dir, 'app-storage')
     this.app = config.app
     this.name = this.app && path.basename(this.app)
