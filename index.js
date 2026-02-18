@@ -15,23 +15,37 @@ const host = platform + '-' + arch
 module.exports = class PearRuntime extends ReadyResource {
   constructor(config) {
     super()
+    this.updates = config.updates ?? true
 
     if (!config.dir) throw new Error('dir required')
-    if (!config.upgrade) throw new Error('upgrade link required')
-    const { drive: upgrade } = link.parse(config.upgrade)
+    if (this.updates && !config.upgrade) throw new Error('upgrade link required')
+
     this.dir = config.dir
     this.version = config.version || 0
     this.storage = path.join(this.dir, 'app-storage')
     this.app = config.app
     this.name = this.app && path.basename(this.app)
-    this.key = hid.decode(upgrade.key)
-    this.length = upgrade.length || 0
-    this.fork = upgrade.fork || 0
-    this.link = link.serialize({ drive: { fork: this.fork, length: this.length, key: this.key } })
     this.bundled = config.bundled || !!this.app
-    this.store = config.store || new Corestore(path.join(this.dir, 'pear-runtime/corestore'))
-    this.drive = new Hyperdrive(this.store, this.key)
-    this.swarm = config.swarm || null
+
+    if (this.updates) {
+      const { drive: upgrade } = link.parse(config.upgrade)
+      this.key = hid.decode(upgrade.key)
+      this.length = upgrade.length || 0
+      this.fork = upgrade.fork || 0
+      this.link = link.serialize({ drive: { fork: this.fork, length: this.length, key: this.key } })
+      this.store = config.store || new Corestore(path.join(this.dir, 'pear-runtime/corestore'))
+      this.drive = new Hyperdrive(this.store, this.key)
+      this.swarm = config.swarm || null
+    } else {
+      this.key = null
+      this.length = null
+      this.fork = null
+      this.link = null
+      this.store = null
+      this.drive = null
+      this.swarm = null
+    }
+
     this.next = null
     this.checkout = null
 
@@ -49,7 +63,7 @@ module.exports = class PearRuntime extends ReadyResource {
   async _open() {
     await this.drive.ready()
 
-    if (this.bundled) {
+    if (this.bundled && this.updates !== false) {
       await fs.promises.rm(path.join(this.dir, 'pear-runtime/next'), {
         recursive: true,
         force: true
@@ -89,6 +103,7 @@ module.exports = class PearRuntime extends ReadyResource {
   }
 
   async _update() {
+    if (this.updates === false) return
     if (this.updating) return
     this.updating = true
 
