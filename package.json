@@ -23,16 +23,13 @@
     "lint": "lunte"
   },
   "imports": {
-    "fs": {
-      "bare": "bare-fs",
-      "default": "fs"
-    },
     "path": {
       "bare": "bare-path",
       "default": "path"
     }
   },
   "dependencies": {
+    "bare-path": "^3.0.0",
     "bare-sidecar": "^0.3.0",
     "pear-runtime-updater": "^0.0.6",
     "ready-resource": "^1.2.0"

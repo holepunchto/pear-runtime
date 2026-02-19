@@ -1,9 +1,11 @@
 const PRU = require('pear-runtime-updater')
 const ReadyResource = require('ready-resource')
 const Sidecar = require('bare-sidecar')
+const path = require('path')
 
 module.exports = class PearRuntime extends ReadyResource {
   constructor(opts = {}) {
+    super()
     if (!opts.dir) throw new Error('dir required')
 
     this.dir = opts.dir
