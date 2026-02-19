@@ -31,7 +31,7 @@
   "dependencies": {
     "bare-path": "^3.0.0",
     "bare-sidecar": "^0.3.0",
-    "pear-runtime-updater": "^0.0.7"
+    "pear-runtime-updater": "^0.0.8"
   },
   "devDependencies": {
     "lunte": "^1.6.0",
