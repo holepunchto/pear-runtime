@@ -33,12 +33,8 @@
     }
   },
   "dependencies": {
-    "bare-fs": "^4.5.3",
-    "bare-path": "^3.0.0",
     "bare-sidecar": "^0.3.0",
-    "fs-native-extensions": "^1.4.5",
-    "pear-runtime-updater": "^0.0.1",
-    "which-runtime": "^1.3.2"
+    "pear-runtime-updater": "^0.0.4"
   },
   "devDependencies": {
     "lunte": "^1.6.0",
