@@ -8,7 +8,7 @@ const host = platform + '-' + arch
 
 module.exports = class PearRuntime extends PearRuntimeUpdater {
   constructor(config) {
-    super({ updates: true, ...config })
+    super(config)
     if (!config.dir) throw new Error('dir required')
 
     if (this.dir === undefined) this.dir = config.dir
