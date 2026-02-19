@@ -34,7 +34,8 @@
   },
   "dependencies": {
     "bare-sidecar": "^0.3.0",
-    "pear-runtime-updater": "^0.0.5"
+    "pear-runtime-updater": "^0.0.6",
+    "ready-resource": "^1.2.0"
   },
   "devDependencies": {
     "lunte": "^1.6.0",
