@@ -10,6 +10,16 @@ This module integrates Pear into JavaScript-based Desktop applications.
 
 See [pear-mobile](https://github.com/holepunchto/pear-mobile) for Pear's embeddable runtime module for Mobile Devices.
 
+## MVP - EXPERIMENTAL
+
+This boilerplate is MVP and Experimental.
+
+## OS Support
+
+- MacOS
+- Linux - Work in Progress
+- Windows - Work in Progress
+
 ## Quick Starts
 
 ### Electron
