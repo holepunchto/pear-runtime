@@ -42,11 +42,16 @@ For end-to-end instructions from building to deploying with [Pear](https://docs.
 
 ## API
 
-#### `const runtime = new PearRuntime(...)`
+#### `const pear = new PearRuntime(opts)`
 
-TODO
+- `opts.dir` – (required) Directory to store data (e.g. app data dir).
+- `opts.upgrade` – (required) Pear upgrade link (e.g. from `package.json` `upgrade` field).
+- `opts.version` – (optional) Current app version; used to decide if an update should be stored.
+- `opts.app` – (optional) Path to the app bundle (for bundled apps; used with `applyUpdate()`).
+- `opts.bundled` – (optional) Whether the app is bundled. Defaults to `!!opts.app`.
+- `opts.updates` – (optional) Set to false to opt out of updates.
 
-#### `IPC <stream.Duplex> = runtime.run(path, args = [], opts = {})`
+#### `IPC <stream.Duplex> = pear.run(path, args = [], opts = {})`
 
 Start a [bare](https://github.com/holepunchto/bare) worker.
 Returns a duplex stream, the `IPC` pipe.
@@ -55,23 +60,23 @@ In the worker, `Bare.IPC` is the other end of the pipe.
 
 Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
 
-#### `runtime.storage`
+#### `pear.storage`
 
 Suggested storage folder for app storage.
 
-#### `runtime.on('updating')`
+#### `pear.on('updating')`
 
 Emitted when an update is in progress
 
-#### `runtime.on('updated')`
+#### `pear.on('updated')`
 
 Emitted when an update is done
 
-#### `await runtime.applyUpdate()`
+#### `await pear.applyUpdate()`
 
 Apply the update. Only valid post `updated`. On next app restart the new update is in effect.
 
-#### `await runtime.close()`
+#### `await pear.close()`
 
 Shut it down. You should do this when closing your app for best performance.
 
