@@ -82,8 +82,8 @@ Build an app. Take the distributable (e.g .app) produced and make a deployment f
 ```
 /package.json
 /by-arch
-  /app
-    /[...platform-arch]
+  /[...platform-arch]
+    /app
 ```
 
 Now go to this folder and stage this onto the link with `pear stage`
