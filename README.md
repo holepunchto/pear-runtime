@@ -20,6 +20,33 @@ This boilerplate is MVP and Experimental.
 - Linux - Work in Progress
 - Windows - Work in Progress
 
+## Usage
+
+```js
+const path = require('path')
+const PearRuntime = require('pear-runtime')
+const { version, upgrade } = require('./package.json')
+
+function getApp() {
+  return path.join(process.resourcesPath, '../..')
+}
+
+const runtime = new PearRuntime({
+  dir: path.join(__dirname, 'runtime-data'),
+  version,
+  upgrade,
+  app: getApp() // path to .app / .AppImage
+})
+
+runtime.on('updating', () => console.log('Updating...'))
+runtime.on('updated', () => runtime.applyUpdate())
+
+const worker = runtime.run(require.resolve('./worker.js'))
+worker.on('data', (data) => console.log('worker:', data.toString()))
+
+process.on('beforeExit', async () => await runtime.close())
+```
+
 ## Quick Starts
 
 ### Electron
@@ -36,7 +63,7 @@ For end-to-end instructions from building to deploying with [Pear](https://docs.
 
 ## Features
 
-- Peer-to-Peer Over-the-Air (P2P OTA) updates
+- Peer-to-Peer Over-the-Air (P2P OTA) updates (via [pear-runtime-updater](https://www.github.com/holepunchto/pear-runtime-updater))
 - Run workers in [Bare Runtime](https://github.com/holepunchto/bare)
 - Application storage management
 
@@ -64,25 +91,15 @@ Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
 
 Suggested storage folder for app storage.
 
-#### `pear.on('updating')`
-
-Emitted when an update is in progress
-
-#### `pear.on('updated')`
-
-Emitted when an update is done
-
-#### `await pear.applyUpdate()`
-
-Apply the update. Only valid post `updated`. On next app restart the new update is in effect.
-
 #### `await pear.close()`
 
-Shut it down. You should do this when closing your app for best performance.
+Shut it down (including the updater). You should do this when closing your app for best performance.
 
 ## Making updates
 
 VERY EXPERIMENTAL, MOST DEFINITELY WILL CHANGE.
+
+Update listening and apply logic lives in [pear-runtime-updater](https://www.github.com/holepunchto/pear-runtime-updater).
 
 First allocate a pear link if you haven't using [`pear`](https://github.com/holepunchto/pear):
 
