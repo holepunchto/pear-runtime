@@ -93,7 +93,7 @@ Suggested storage folder for app storage.
 
 #### `await pear.ready()`
 
-Awaits the open of the updater (p2p connections, drive open ...)
+ Resolves when ready. Initialization is eager, but can be used to determine when OTA updates are ready.
 
 #### `await pear.close()`
 
