@@ -44,7 +44,7 @@ pear.updater.on('updated', () => pear.updater.applyUpdate())
 const worker = pear.run(require.resolve('./worker.js'))
 worker.on('data', (data) => console.log('worker:', data.toString()))
 
-process.on('beforeExit', async () => await pear.close())
+// be sure to await pear.close() during process teardown
 ```
 
 ## Quick Starts
@@ -97,7 +97,7 @@ Suggested storage folder for app storage.
 
 #### `await pear.close()`
 
-Shut it down (including the updater). You should do this when closing your app for best performance.
+Shut down the embedded runtime, including OTA updates. For best performance, be sure to do this when closing the app.
 
 ## Making updates
 
