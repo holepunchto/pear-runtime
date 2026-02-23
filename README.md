@@ -31,20 +31,20 @@ function getApp() {
   return path.join(process.resourcesPath, '../..')
 }
 
-const runtime = new PearRuntime({
+const pear = new PearRuntime({
   dir: path.join(__dirname, 'runtime-data'),
   version,
   upgrade,
   app: getApp() // path to .app / .AppImage
 })
 
-runtime.on('updating', () => console.log('Updating...'))
-runtime.on('updated', () => runtime.applyUpdate())
+pear.updater.on('updating', () => console.log('Updating...'))
+pear.updater.on('updated', () => pear.updater.applyUpdate())
 
-const worker = runtime.run(require.resolve('./worker.js'))
+const worker = pear.run(require.resolve('./worker.js'))
 worker.on('data', (data) => console.log('worker:', data.toString()))
 
-process.on('beforeExit', async () => await runtime.close())
+process.on('beforeExit', async () => await pear.close())
 ```
 
 ## Quick Starts
@@ -90,6 +90,10 @@ Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
 #### `pear.storage`
 
 Suggested storage folder for app storage.
+
+#### `await pear.ready()`
+
+Awaits the open of the updater (p2p connections, drive open ...)
 
 #### `await pear.close()`
 
