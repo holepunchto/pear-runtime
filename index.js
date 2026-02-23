@@ -2,14 +2,17 @@ const Hyperswarm = require('hyperswarm')
 const Hyperdrive = require('hyperdrive')
 const Localdrive = require('localdrive')
 const Corestore = require('corestore')
+const { spec, Model } = require('pear-hyperdb')
+const HyperDB = require('hyperdb')
 const path = require('path')
+const os = require('os')
 const fs = require('fs')
 const fsx = require('fs-native-extensions')
 const ReadyResource = require('ready-resource')
 const Sidecar = require('bare-sidecar')
 const link = require('pear-link')
 const hid = require('hypercore-id-encoding')
-const { platform, arch } = require('which-runtime')
+const { platform, arch, isMac, isLinux } = require('which-runtime')
 const host = platform + '-' + arch
 
 module.exports = class PearRuntime extends ReadyResource {
@@ -39,6 +42,9 @@ module.exports = class PearRuntime extends ReadyResource {
     this.updated = false
     this.applied = false
 
+    this.legacyStorage = null
+    this._legacyStorageKey = config.legacyStorageKey
+
     this.ready().catch(noop)
   }
 
@@ -65,6 +71,14 @@ module.exports = class PearRuntime extends ReadyResource {
 
       this._updateBackground()
       this.drive.core.on('append', () => this._updateBackground())
+    }
+
+    if (this._legacyStorageKey) {
+      try {
+        this.storage = await this._getLegacyStorage(this._legacyStorageKey)
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 
@@ -127,6 +141,24 @@ module.exports = class PearRuntime extends ReadyResource {
     this.emit('updated')
 
     if (this.drive.core.length > length) this._updateBackground()
+  }
+
+  async _getLegacyStorage() {
+    const platformDir = isMac
+      ? path.join(os.homedir(), 'Library', 'Application Support')
+      : isLinux
+        ? path.join(os.homedir(), '.config')
+        : path.join(os.homedir(), 'AppData', 'Roaming')
+    const store = new Corestore(path.join(platformDir, 'pear', 'corestores', 'platform'), {
+      readOnly: true
+    })
+    const rocks = HyperDB.rocks(store.storage.rocks.session(), spec)
+    const model = new Model(rocks)
+    await model.db.ready()
+
+    const legacyStorage = await model.getAppStorage(this._legacyStorageKey)
+    await model.close()
+    return legacyStorage
   }
 }
 
