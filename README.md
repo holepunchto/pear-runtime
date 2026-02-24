@@ -20,6 +20,33 @@ This boilerplate is MVP and Experimental.
 - Linux - Work in Progress
 - Windows - Work in Progress
 
+## Usage
+
+```js
+const path = require('path')
+const PearRuntime = require('pear-runtime')
+const { version, upgrade } = require('./package.json')
+
+function getApp() {
+  return path.join(process.resourcesPath, '../..')
+}
+
+const pear = new PearRuntime({
+  dir: path.join(__dirname, 'runtime-data'),
+  version,
+  upgrade,
+  app: getApp() // path to .app / .AppImage
+})
+
+pear.updater.on('updating', () => console.log('Updating...'))
+pear.updater.on('updated', () => pear.updater.applyUpdate())
+
+const worker = pear.run(require.resolve('./worker.js'))
+worker.on('data', (data) => console.log('worker:', data.toString()))
+
+// be sure to await pear.close() during process teardown
+```
+
 ## Quick Starts
 
 ### Electron
@@ -36,7 +63,7 @@ For end-to-end instructions from building to deploying with [Pear](https://docs.
 
 ## Features
 
-- Peer-to-Peer Over-the-Air (P2P OTA) updates
+- Peer-to-Peer Over-the-Air (P2P OTA) updates (via [pear-runtime-updater](https://www.github.com/holepunchto/pear-runtime-updater))
 - Run workers in [Bare Runtime](https://github.com/holepunchto/bare)
 - Application storage management
 
@@ -64,25 +91,19 @@ Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
 
 Suggested storage folder for app storage.
 
-#### `pear.on('updating')`
+#### `await pear.ready()`
 
-Emitted when an update is in progress
-
-#### `pear.on('updated')`
-
-Emitted when an update is done
-
-#### `await pear.applyUpdate()`
-
-Apply the update. Only valid post `updated`. On next app restart the new update is in effect.
+Resolves when ready. Initialization is eager, but can be used to determine when OTA updates are ready.
 
 #### `await pear.close()`
 
-Shut it down. You should do this when closing your app for best performance.
+Shut down the embedded runtime, including OTA updates. For best performance, be sure to do this when closing the app.
 
 ## Making updates
 
 VERY EXPERIMENTAL, MOST DEFINITELY WILL CHANGE.
+
+Update listening and apply logic lives in [pear-runtime-updater](https://www.github.com/holepunchto/pear-runtime-updater).
 
 First allocate a pear link if you haven't using [`pear`](https://github.com/holepunchto/pear):
 
@@ -97,8 +118,8 @@ Build an app. Take the distributable (e.g .app) produced and make a deployment f
 ```
 /package.json
 /by-arch
-  /app
-    /[...platform-arch]
+  /[...platform-arch]
+    /app
 ```
 
 Now go to this folder and stage this onto the link with `pear stage`
