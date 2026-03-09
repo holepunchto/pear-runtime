@@ -10,6 +10,9 @@ module.exports = class PearRuntime extends ReadyResouce {
     this.dir = opts.dir
     this.storage = opts.storage || path.join(this.dir, 'app-storage')
     this.updater = new PearRuntimeUpdater(opts)
+    this.updater.on('error', (err) => {
+      this.emit('error', err)
+    })
   }
 
   async _open() {
