@@ -12,7 +12,7 @@ See [pear-mobile](https://github.com/holepunchto/pear-mobile) for Pear's embedda
 
 ## MVP - EXPERIMENTAL
 
-This boilerplate is MVP and Experimental.
+This library is MVP and Experimental.
 
 ## OS Support
 
