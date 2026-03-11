@@ -37,7 +37,7 @@ const pear = new PearRuntime({
   upgrade,
   app: getApp() // path to .app / .AppImage
 })
-
+pear.on('error', console.error) // log network errors etc.
 pear.updater.on('updating', () => console.log('Updating...'))
 pear.updater.on('updated', () => pear.updater.applyUpdate())
 
