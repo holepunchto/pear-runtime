@@ -17,8 +17,8 @@ This library is MVP and Experimental.
 ## OS Support
 
 - MacOS
-- Linux - Work in Progress
-- Windows - Work in Progress
+- Linux
+- Windows
 
 ## Usage
 
