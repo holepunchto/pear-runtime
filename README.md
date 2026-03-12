@@ -27,15 +27,18 @@ const path = require('path')
 const PearRuntime = require('pear-runtime')
 const { version, upgrade } = require('./package.json')
 
-function getApp() {
-  return path.join(process.resourcesPath, '../..')
+function getAppPath() {
+  if (!app.isPackaged) return null
+  if (isLinux && process.env.APPIMAGE) return process.env.APPIMAGE
+  if (isWindows) return process.execPath
+  return path.join(process.resourcesPath, '..', '..')
 }
 
 const pear = new PearRuntime({
   dir: path.join(__dirname, 'runtime-data'),
   version,
   upgrade,
-  app: getApp() // path to .app / .AppImage
+  app: getAppPath(), // path to .app / .AppImage / .msix
 })
 pear.on('error', console.error) // log network errors etc.
 pear.updater.on('updating', () => console.log('Updating...'))
