@@ -38,7 +38,7 @@ const pear = new PearRuntime({
   dir: path.join(__dirname, 'runtime-data'),
   version,
   upgrade,
-  app: getAppPath(), // path to .app / .AppImage / .msix
+  app: getAppPath() // path to .app / .AppImage / .msix
 })
 pear.on('error', console.error) // log network errors etc.
 pear.updater.on('updating', () => console.log('Updating...'))
@@ -82,7 +82,6 @@ For end-to-end instructions from building to deploying with [Pear](https://docs.
 - `opts.bundled` – (optional) Whether the app is bundled. Defaults to `!!opts.app`.
 - `opts.updates` – (optional) Set to false to opt out of updates.
 - `opts.storage` – (optional) Set peer-to-peer application storage path.
-
 
 #### `IPC <stream.Duplex> = pear.run(path, args = [], opts = {})`
 
