@@ -16,7 +16,6 @@ module.exports = class PearRuntime extends ReadyResouce {
     this.swarm = opts.swarm || null
     this.isModuleSwarm = this.swarm === null
     this.bootstrap = opts.bootstrap
-    this.store = opts.store
     this.storage = opts.storage || path.join(this.dir, 'app-storage')
     this.updater = new PearRuntimeUpdater(opts)
   }
@@ -27,8 +26,8 @@ module.exports = class PearRuntime extends ReadyResouce {
       const keyPair = await store.createKeyPair('pear-runtime')
       this.swarm = new Hyperswarm({ keyPair, bootstrap: this.bootstrap })
     }
-    swarm.on('connection', (connection) => store.replicate(connection))
-    swarm.join(updater.drive.core.discoveryKey, {
+    swarm.on('connection', (connection) => this.updater.store.replicate(connection))
+    swarm.join(this.updater.drive.core.discoveryKey, {
       client: true,
       server: false
     })
