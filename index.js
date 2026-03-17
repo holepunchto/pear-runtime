@@ -12,6 +12,7 @@ module.exports = class PearRuntime extends ReadyResource {
       throw new Error('must pass store if passing swarm and vice versa')
     }
     this.dir = opts.dir
+    this.isModuleStore = !opts.store
     if (!opts.store) opts.store = new Corestore(path.join(this.dir, 'pear-runtime/corestore'))
     this.swarm = opts.swarm || null
     this.isModuleSwarm = this.swarm === null
@@ -25,17 +26,18 @@ module.exports = class PearRuntime extends ReadyResource {
     if (this.swarm === null) {
       const keyPair = await this.updater.store.createKeyPair('pear-runtime')
       this.swarm = new Hyperswarm({ keyPair, bootstrap: this.bootstrap })
+      this.swarm.on('connection', (connection) => this.updater.store.replicate(connection))
+      this.swarm.join(this.updater.drive.core.discoveryKey, {
+        client: true,
+        server: false
+      })
     }
-    this.swarm.on('connection', (connection) => this.updater.store.replicate(connection))
-    this.swarm.join(this.updater.drive.core.discoveryKey, {
-      client: true,
-      server: false
-    })
   }
 
   async _close() {
     if (this.isModuleSwarm) await this.swarm.destroy()
     await this.updater.close()
+    if (this.isModuleStore) await this.updater.store.close()
   }
 
   run(entrypoint, args = [], opts = {}) {
