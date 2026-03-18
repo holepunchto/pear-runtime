@@ -77,7 +77,7 @@ For end-to-end instructions from building to deploying with [Pear](https://docs.
 - `opts.dir` – (required) Directory to store data (e.g. app data dir).
 - `opts.upgrade` – (required) Pear upgrade link (e.g. from `package.json` `upgrade` field).
 - `opts.name` - (required) The package.json `productName` of the app.
-- **`store`** - (optional) pass a corestore to be used for updates.
+- **`store`** - (optional) pass a [Corestore](https://github.com/holepunchto/corestore) to be used for updates.
 - **`swarm`** - (optional) pass a hyperswarm to be used for swarming updates. (need to handle store replication manually if passed)
 - `opts.version` – (optional) Current app version; used to decide if an update should be stored.
 - `opts.app` – (optional) Path to the app bundle (for bundled apps; used with `applyUpdate()`).
