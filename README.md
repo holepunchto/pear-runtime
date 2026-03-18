@@ -38,7 +38,7 @@ const pear = new PearRuntime({
   dir: path.join(__dirname, 'runtime-data'),
   version,
   upgrade,
-  app: getAppPath(), // path to .app / .AppImage / .msix
+  app: getAppPath() // path to .app / .AppImage / .msix
 })
 pear.on('error', console.error) // log network errors etc.
 pear.updater.on('updating', () => console.log('Updating...'))
@@ -77,12 +77,13 @@ For end-to-end instructions from building to deploying with [Pear](https://docs.
 - `opts.dir` – (required) Directory to store data (e.g. app data dir).
 - `opts.upgrade` – (required) Pear upgrade link (e.g. from `package.json` `upgrade` field).
 - `opts.name` - (required) The package.json `productName` of the app.
+- **`store`** - (optional) pass a [Corestore](https://github.com/holepunchto/corestore) to be used for updates. If passed `swarm` must also be passed. The `store` should be replicated over the `swarm`.
+- **`swarm`** - (optional) pass a [Hyperswarm](https://github.com/holepunchto/hyperswarm) to be used for swarming updates. If passed `store` must also be passed. The `store` should be replicated over the `swarm`.
 - `opts.version` – (optional) Current app version; used to decide if an update should be stored.
 - `opts.app` – (optional) Path to the app bundle (for bundled apps; used with `applyUpdate()`).
 - `opts.bundled` – (optional) Whether the app is bundled. Defaults to `!!opts.app`.
 - `opts.updates` – (optional) Set to false to opt out of updates.
 - `opts.storage` – (optional) Set peer-to-peer application storage path.
-
 
 #### `IPC <stream.Duplex> = pear.run(path, args = [], opts = {})`
 
