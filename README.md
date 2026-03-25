@@ -94,9 +94,18 @@ In the worker, `Bare.IPC` is the other end of the pipe.
 
 Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
 
+- Can be called on instance with [pear.run(path, args, opts)](#ipc-streamduplex--pearrunpath-args---opts--)
+
 #### `IPC <stream.Duplex> = pear.run(path, args = [], opts = {})`
 
-Calls `PearRuntime.run(path, args, opts)`
+Start a [bare](https://github.com/holepunchto/bare) worker.
+Returns a duplex stream, the `IPC` pipe.
+
+In the worker, `Bare.IPC` is the other end of the pipe.
+
+Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
+
+- Returns [PearRuntime.run(path, args, opts)](#ipc-streamduplex--pearruntimerunpath-args---opts--)
 
 #### `pear.storage`
 
