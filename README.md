@@ -44,7 +44,7 @@ pear.on('error', console.error) // log network errors etc.
 pear.updater.on('updating', () => console.log('Updating...'))
 pear.updater.on('updated', () => pear.updater.applyUpdate())
 
-const worker = pear.run(require.resolve('./worker.js'))
+const worker = PearRuntime.run(require.resolve('./worker.js'))
 worker.on('data', (data) => console.log('worker:', data.toString()))
 
 // be sure to await pear.close() during process teardown
@@ -72,6 +72,17 @@ For end-to-end instructions from building to deploying with [Pear](https://docs.
 
 ## API
 
+#### `IPC <stream.Duplex> = PearRuntime.run(path, args = [], opts = {})`
+
+alias: [pear.run](#ipc-streamduplex--pearrunpath-args---opts--)
+
+Start a [bare](https://github.com/holepunchto/bare) worker.
+Returns a duplex stream, the `IPC` pipe.
+
+In the worker, `Bare.IPC` is the other end of the pipe.
+
+Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
+
 #### `const pear = new PearRuntime(opts)`
 
 - `opts.dir` – (required) Directory to store data (e.g. app data dir).
@@ -86,6 +97,8 @@ For end-to-end instructions from building to deploying with [Pear](https://docs.
 - `opts.storage` – (optional) Set peer-to-peer application storage path.
 
 #### `IPC <stream.Duplex> = pear.run(path, args = [], opts = {})`
+
+alias: [PearRuntime.run](#ipc-streamduplex--pearruntimerunpath-args---opts--)
 
 Start a [bare](https://github.com/holepunchto/bare) worker.
 Returns a duplex stream, the `IPC` pipe.
