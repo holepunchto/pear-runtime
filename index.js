@@ -43,4 +43,8 @@ module.exports = class PearRuntime extends ReadyResource {
   static run(entrypoint, args = [], opts = {}) {
     return new Sidecar(entrypoint, args, opts)
   }
+
+  run(entrypoint, args = [], opts = {}) {
+    PearRuntime.run(entrypoint, args, opts)
+  }
 }
