@@ -21,6 +21,10 @@ module.exports = class PearRuntime extends ReadyResource {
     this.updater = new PearRuntimeUpdater(opts)
   }
 
+  static run(entrypoint, args = [], opts = {}) {
+    return new Sidecar(entrypoint, args, opts)
+  }
+
   async _open() {
     await this.updater.ready()
     if (this.swarm === null) {
@@ -38,10 +42,6 @@ module.exports = class PearRuntime extends ReadyResource {
     if (this.opts.swarm) await this.swarm.destroy()
     await this.updater.close()
     if (this.opts.store) await this.store.close()
-  }
-
-  static run(entrypoint, args = [], opts = {}) {
-    return new Sidecar(entrypoint, args, opts)
   }
 
   run(entrypoint, args = [], opts = {}) {

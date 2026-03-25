@@ -72,6 +72,17 @@ For end-to-end instructions from building to deploying with [Pear](https://docs.
 
 ## API
 
+#### `IPC <stream.Duplex> = PearRuntime.run(path, args = [], opts = {})`
+
+alias: [pear.run](#ipc-streamduplex--pearrunpath-args---opts--)
+
+Start a [bare](https://github.com/holepunchto/bare) worker.
+Returns a duplex stream, the `IPC` pipe.
+
+In the worker, `Bare.IPC` is the other end of the pipe.
+
+Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
+
 #### `const pear = new PearRuntime(opts)`
 
 - `opts.dir` – (required) Directory to store data (e.g. app data dir).
@@ -85,27 +96,16 @@ For end-to-end instructions from building to deploying with [Pear](https://docs.
 - `opts.updates` – (optional) Set to false to opt out of updates.
 - `opts.storage` – (optional) Set peer-to-peer application storage path.
 
-#### `IPC <stream.Duplex> = PearRuntime.run(path, args = [], opts = {})`
-
-Start a [bare](https://github.com/holepunchto/bare) worker.
-Returns a duplex stream, the `IPC` pipe.
-
-In the worker, `Bare.IPC` is the other end of the pipe.
-
-Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
-
-- Can be called on instance with [pear.run(path, args, opts)](#ipc-streamduplex--pearrunpath-args---opts--)
-
 #### `IPC <stream.Duplex> = pear.run(path, args = [], opts = {})`
 
+alias: [PearRuntime.run](#ipc-streamduplex--pearruntimerunpath-args---opts--)
+
 Start a [bare](https://github.com/holepunchto/bare) worker.
 Returns a duplex stream, the `IPC` pipe.
 
 In the worker, `Bare.IPC` is the other end of the pipe.
 
 Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
-
-- Returns [PearRuntime.run(path, args, opts)](#ipc-streamduplex--pearruntimerunpath-args---opts--)
 
 #### `pear.storage`
 
