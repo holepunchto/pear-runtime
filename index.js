@@ -6,6 +6,11 @@ const Hyperswarm = require('hyperswarm')
 const path = require('path')
 
 module.exports = class PearRuntime extends ReadyResource {
+
+  static run(entrypoint, args = [], opts = {}) {
+    return new Sidecar(entrypoint, args, opts)
+  }
+
   constructor(opts = {}) {
     super()
     if ((!opts.store && opts.swarm) || (opts.store && !opts.swarm)) {
@@ -19,10 +24,6 @@ module.exports = class PearRuntime extends ReadyResource {
     this.bootstrap = opts.bootstrap
     this.storage = opts.storage || path.join(this.dir, 'app-storage')
     this.updater = new PearRuntimeUpdater(opts)
-  }
-
-  static run(entrypoint, args = [], opts = {}) {
-    return new Sidecar(entrypoint, args, opts)
   }
 
   async _open() {
