@@ -40,7 +40,7 @@ module.exports = class PearRuntime extends ReadyResource {
     if (this.opts.store) await this.store.close()
   }
 
-  run(entrypoint, args = [], opts = {}) {
+  static run(entrypoint, args = [], opts = {}) {
     return new Sidecar(entrypoint, args, opts)
   }
 }
