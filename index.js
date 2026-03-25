@@ -45,6 +45,6 @@ module.exports = class PearRuntime extends ReadyResource {
   }
 
   run(entrypoint, args = [], opts = {}) {
-    PearRuntime.run(entrypoint, args, opts)
+    return this.constructor.run(entrypoint, args, opts)
   }
 }
