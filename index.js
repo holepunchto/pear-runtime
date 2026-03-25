@@ -6,7 +6,6 @@ const Hyperswarm = require('hyperswarm')
 const path = require('path')
 
 module.exports = class PearRuntime extends ReadyResource {
-
   static run(entrypoint, args = [], opts = {}) {
     return new Sidecar(entrypoint, args, opts)
   }
