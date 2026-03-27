@@ -23,6 +23,8 @@ module.exports = class PearRuntime extends ReadyResource {
     this.bootstrap = opts.bootstrap
     this.storage = opts.storage || path.join(this.dir, 'app-storage')
     this.updater = new PearRuntimeUpdater(opts)
+
+    this.ready().catch(noop)
   }
 
   async _open() {
@@ -48,3 +50,5 @@ module.exports = class PearRuntime extends ReadyResource {
     return this.constructor.run(entrypoint, args, opts)
   }
 }
+
+function noop() {}
