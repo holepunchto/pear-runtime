@@ -4,8 +4,10 @@ const Sidecar = require('bare-sidecar')
 const Corestore = require('corestore')
 const Hyperswarm = require('hyperswarm')
 const path = require('path')
+const storagePath = require('bare-storage')
 
 module.exports = class PearRuntime extends ReadyResource {
+  static storage = storagePath.persistent()
   static run(entrypoint, args = [], opts = {}) {
     return new Sidecar(entrypoint, args, opts)
   }
@@ -21,7 +23,7 @@ module.exports = class PearRuntime extends ReadyResource {
     this.store = opts.store
     this.swarm = opts.swarm || null
     this.bootstrap = opts.bootstrap
-    this.storage = opts.storage || path.join(this.dir, 'app-storage')
+    this.storage = opts.storage || this.constructor.storage
     this.updater = new PearRuntimeUpdater(opts)
 
     this.ready().catch(noop)
