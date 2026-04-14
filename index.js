@@ -7,7 +7,7 @@ const path = require('path')
 const storagePath = require('bare-storage')
 
 module.exports = class PearRuntime extends ReadyResource {
-  static storage = storagePath.persistent()
+  static storage = path.join(storagePath.persistent(), 'app-storage')
   static run(entrypoint, args = [], opts = {}) {
     return new Sidecar(entrypoint, args, opts)
   }
