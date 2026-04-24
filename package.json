@@ -23,6 +23,10 @@
     "lint": "lunte"
   },
   "imports": {
+    "#run": {
+      "bare": "./lib/run/bare.js",
+      "default": "./lib/run/default.js"
+    },
     "path": {
       "bare": "bare-path",
       "default": "path"
