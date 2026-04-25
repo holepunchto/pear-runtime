@@ -1,13 +1,13 @@
 const PearRuntimeUpdater = require('pear-runtime-updater')
 const ReadyResource = require('ready-resource')
-const Sidecar = require('bare-sidecar')
 const Corestore = require('corestore')
 const Hyperswarm = require('hyperswarm')
 const path = require('path')
+const run = require('#run')
 
 module.exports = class PearRuntime extends ReadyResource {
-  static run(entrypoint, args = [], opts = {}) {
-    return new Sidecar(entrypoint, args, opts)
+  static run(entrypoint, args, opts) {
+    return run(entrypoint, args, opts)
   }
 
   constructor(opts = {}) {

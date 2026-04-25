@@ -15,7 +15,8 @@
   "files": [
     "package.json",
     "index.js",
-    "index.d.ts"
+    "index.d.ts",
+    "lib/"
   ],
   "scripts": {
     "format": "prettier --write .",
@@ -23,6 +24,10 @@
     "lint": "lunte"
   },
   "imports": {
+    "#run": {
+      "bare": "./lib/run/bare.js",
+      "default": "./lib/run/default.js"
+    },
     "path": {
       "bare": "bare-path",
       "default": "path"
