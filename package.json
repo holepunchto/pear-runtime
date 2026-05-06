@@ -45,5 +45,18 @@
     "lunte": "^1.6.0",
     "prettier": "^3.8.1",
     "prettier-config-holepunch": "^2.0.0"
-  }
+  },
+  "directories": {
+    "example": "examples",
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holepunchto/pear-runtime.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/holepunchto/pear-runtime/issues"
+  },
+  "homepage": "https://github.com/holepunchto/pear-runtime#readme"
 }
