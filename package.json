@@ -1,6 +1,6 @@
 {
   "name": "pear-runtime",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Embeddable Pear Runtime",
   "license": "Apache-2.0",
   "author": "Holepunch Inc",
