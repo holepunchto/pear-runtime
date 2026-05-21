@@ -41,9 +41,9 @@ module.exports = class PearRuntime extends ReadyResource {
   }
 
   async _close() {
-    if (this.opts.swarm) await this.swarm.destroy()
+    if (!this.opts.swarm && this.swarm !== null) await this.swarm.destroy()
     await this.updater.close()
-    if (this.opts.store) await this.store.close()
+    if (!this.opts.store) await this.store.close()
   }
 
   run(entrypoint, args = [], opts = {}) {
