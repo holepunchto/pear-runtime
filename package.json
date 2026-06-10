@@ -43,7 +43,8 @@
     "corestore": "^7.9.1",
     "hyperswarm": "^4.17.0",
     "pear-runtime-updater": "^3.0.0",
-    "ready-resource": "^1.2.0"
+    "ready-resource": "^1.2.0",
+    "streamx": "^2.27.0"
   },
   "devDependencies": {
     "lunte": "^1.6.0",
