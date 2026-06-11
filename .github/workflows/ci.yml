@@ -5,9 +5,26 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    name: Test
+  test:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            arch: x64
+          - os: macos-latest
+            platform: darwin
+            arch: x64
+          - os: windows-latest
+            platform: win32
+            arch: x64
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.platform }}-${{ matrix.arch }}
     steps:
-      - uses: holepunchto/actions/node-base@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - run: npm i -g bare-runtime
+      - run: npm i
       - run: npm test

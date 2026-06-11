@@ -20,8 +20,10 @@
   ],
   "scripts": {
     "format": "prettier --write .",
-    "test": "prettier --check . && lunte",
-    "lint": "lunte"
+    "test": "prettier --check . && lunte && npm run test:node && npm run test:bare",
+    "lint": "lunte",
+    "test:node": "brittle-node test/index.test.js",
+    "test:bare": "brittle-bare test/index.test.js"
   },
   "imports": {
     "#run": {
@@ -46,6 +48,7 @@
     "ready-resource": "^1.2.0"
   },
   "devDependencies": {
+    "brittle": "^4.0.2",
     "lunte": "^1.6.0",
     "prettier": "^3.8.1",
     "prettier-config-holepunch": "^2.0.0"
