@@ -83,6 +83,9 @@ In the worker, `Bare.IPC` is the other end of the pipe.
 
 Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
 
+> [!WARNING]
+> When `run()` is called from a Bare process, it starts the worker in a new Bare thread instead of a separate process. Bare threads do not expose process stdio endpoints, so `IPC.stdin`, `IPC.stdout` and `IPC.stderr` are undefined in that environment.
+
 #### `const pear = new PearRuntime(opts)`
 
 - `opts.dir` – (required) Directory to store data (e.g. app data dir).
@@ -106,6 +109,9 @@ Returns a duplex stream, the `IPC` pipe.
 In the worker, `Bare.IPC` is the other end of the pipe.
 
 Worker stdio is available at `IPC.stdin`, `IPC.stdout` & `IPC.stderr`.
+
+> [!WARNING]
+> When `run()` is called from a Bare process, it starts the worker in a new Bare thread instead of a separate process. Bare threads do not expose process stdio endpoints, so `IPC.stdin`, `IPC.stdout` and `IPC.stderr` are undefined in that environment.
 
 #### `pear.storage`
 
