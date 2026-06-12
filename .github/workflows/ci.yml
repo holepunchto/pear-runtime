@@ -21,8 +21,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.platform }}-${{ matrix.arch }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: holepunchto/actions/node-base@v1
+      - uses: actions/setup-node@v6
         with:
           node-version: lts/*
       - run: npm i -g bare-runtime
