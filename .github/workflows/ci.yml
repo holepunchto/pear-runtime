@@ -23,8 +23,6 @@ jobs:
     steps:
       - uses: holepunchto/actions/node-base@v1
       - uses: holepunchto/actions/setup-node@v1
-        with:
-          node-version: lts/*
       - run: npm i -g bare-runtime
       - run: npm i
       - run: npm test
