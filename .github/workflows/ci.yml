@@ -22,5 +22,5 @@ jobs:
     name: ${{ matrix.platform }}-${{ matrix.arch }}
     steps:
       - uses: holepunchto/actions/node-base@v1
-      - run: npm i -g bare-runtime
+      - uses: holepunchto/actions/bare-base@v1
       - run: npm test
