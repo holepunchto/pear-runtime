@@ -20,8 +20,10 @@
   ],
   "scripts": {
     "format": "prettier --write .",
-    "test": "prettier --check . && lunte",
-    "lint": "lunte"
+    "test": "prettier --check . && lunte && npm run test:node && npm run test:bare",
+    "lint": "lunte",
+    "test:node": "brittle-node test/index.test.js",
+    "test:bare": "brittle-bare test/index.test.js"
   },
   "imports": {
     "#run": {
@@ -34,14 +36,18 @@
     }
   },
   "dependencies": {
+    "bare-channel": "^5.2.4",
+    "bare-ipc": "^1.1.2",
     "bare-path": "^3.0.0",
     "bare-sidecar": "^0.4.5",
+    "bare-thread": "^1.2.3",
     "corestore": "^7.9.1",
     "hyperswarm": "^4.17.0",
     "pear-runtime-updater": "^3.0.0",
     "ready-resource": "^1.2.0"
   },
   "devDependencies": {
+    "brittle": "^4.0.2",
     "lunte": "^1.6.0",
     "prettier": "^3.8.1",
     "prettier-config-holepunch": "^2.0.0"
