@@ -28,6 +28,7 @@ module.exports = class PearRuntime extends ReadyResource {
   }
 
   async _open() {
+    await this.store.ready()
     await this.updater.ready()
     if (this.swarm === null) {
       const keyPair = await this.store.createKeyPair('pear-runtime')
