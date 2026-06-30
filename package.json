@@ -36,11 +36,9 @@
     }
   },
   "dependencies": {
-    "bare-channel": "^5.2.4",
-    "bare-ipc": "^1.1.2",
     "bare-path": "^3.0.0",
     "bare-sidecar": "^0.5.2",
-    "bare-thread": "^1.2.3",
+    "bare-worker": "^4.4.0",
     "corestore": "^7.9.1",
     "hyperswarm": "^4.17.0",
     "pear-runtime-updater": "^3.0.0",
