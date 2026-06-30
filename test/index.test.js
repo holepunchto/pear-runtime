@@ -7,30 +7,30 @@ test('worker echo', (t) => {
   t.plan(2)
 
   const specifier = require.resolve('./fixture/echo.js')
-  const worker = PearRuntime.run(specifier)
+  const IPC = PearRuntime.run(specifier)
 
   const s = 'hello world'
 
-  worker.on('data', (data) => {
+  IPC.on('data', (data) => {
     t.is(data.toString(), s)
-    worker.destroy()
+    IPC.destroy()
   })
-  worker.on('close', () => {
+  IPC.on('close', () => {
     t.pass()
   })
 
-  worker.write(s)
+  IPC.write(s)
 })
 
 test('worker argvs', async (t) => {
   t.plan(1)
 
   const specifier = require.resolve('./fixture/argv.js')
-  const worker = PearRuntime.run(specifier, ['test'])
-  t.teardown(() => worker.destroy())
+  const IPC = PearRuntime.run(specifier, ['test'])
+  t.teardown(() => IPC.destroy())
 
-  const message = once(worker, 'data')
-  worker.write('ping')
+  const message = once(IPC, 'data')
+  IPC.write('ping')
 
   const argv = JSON.parse((await message).toString())
 
