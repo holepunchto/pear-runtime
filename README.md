@@ -121,6 +121,10 @@ Suggested storage folder for app storage.
 
 Resolves when ready. Initialization is eager, but can be used to determine when OTA updates are ready.
 
+#### `await pear.clearUpgradeDrive()`
+
+Clears cached upgrade metadata and content accumulated across updates, preserving application storage. Call when the updater is idle; clears up disk space but the next update has to be downloaded fully instead of only the diff.
+
 #### `await pear.close()`
 
 Shut down the embedded runtime, including OTA updates. For best performance, be sure to do this when closing the app.
