@@ -123,16 +123,7 @@ Resolves when ready. Initialization is eager, but can be used to determine when 
 
 #### `await pear.clearUpgradeDrive()`
 
-Clears downloaded blocks from the upgrade drive's metadata and content cores. Application storage, other cores in a shared Corestore, the installed app and staged update files are preserved. The drive remains open and can download blocks again from peers.
-
-OTA storage uses append-only logs and can grow across updates as old versions remain cached. Only the device's architecture is downloaded, but the cache can grow beyond the size of the installed app. Keeping these blocks helps incremental downloads and makes them available to peers. Clearing them removes this cache, so future updates may need to download the full distributable again. Disk space reclamation depends on the storage backend's compaction.
-
-Cleanup is never automatic. The application chooses when to call this method, for example from a storage management action or after applying an update with `await pear.updater.applyUpdate()`. Call it while no update check, download, prefetch or other drive read is in progress; concurrent activity can download blocks again. The method waits for runtime initialization and also works when updates are disabled or the device is offline.
-
-```js
-await pear.updater.applyUpdate()
-await pear.clearUpgradeDrive()
-```
+Clears cached upgrade metadata and content accumulated across updates, preserving application storage. Call when the updater is idle; future updates may require a full download.
 
 #### `await pear.close()`
 
