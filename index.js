@@ -49,19 +49,7 @@ module.exports = class PearRuntime extends ReadyResource {
 
   async clearUpgradeDrive() {
     await this.ready()
-    const drive = this.updater.drive
-    const key =
-      drive.contentKey || (drive.core.manifest && drive.constructor.getContentKey(drive.core))
-    if (key) {
-      const core = this.store.get({ key, active: false })
-      try {
-        await core.ready()
-        await core.clear(0, core.length)
-      } finally {
-        await core.close()
-      }
-    }
-    await drive.core.clear(0, drive.core.length)
+    return this.updater.drive.clearAll()
   }
 
   run(entrypoint, args = [], opts = {}) {
