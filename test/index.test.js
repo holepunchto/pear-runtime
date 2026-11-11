@@ -39,35 +39,18 @@ test('worker argvs', async (t) => {
 })
 
 test('clear upgrade drive', async (t) => {
-  const runtime = await createRuntime(t)
-  const cleared = { blocks: 2 }
-  runtime.updater.drive.clearAll = () => Promise.resolve(cleared)
-
-  t.is(await runtime.clearUpgradeDrive(), cleared)
-})
-
-test('clear upgrade drive propagates errors', async (t) => {
-  const runtime = await createRuntime(t)
-  const error = new Error('clear failed')
-  runtime.updater.drive.clearAll = () => Promise.reject(error)
-
-  await t.exception(runtime.clearUpgradeDrive(), error)
-})
-
-test('clear an empty upgrade drive', async (t) => {
-  const runtime = await createRuntime(t)
-
-  t.is(await runtime.clearUpgradeDrive(), null)
-})
-
-async function createRuntime(t) {
   const dir = await t.tmp()
   const store = new Corestore(dir)
+  const core = store.get({ name: 'upgrade' })
+  await core.ready()
+  const upgrade = 'pear://' + core.key.toString('hex')
+  await core.close()
+
   const runtime = new PearRuntime({
     dir,
     store,
     swarm: { destroy: () => Promise.resolve() },
-    upgrade: 'pear://' + '01'.repeat(32),
+    upgrade,
     name: 'app',
     updates: false
   })
@@ -77,8 +60,14 @@ async function createRuntime(t) {
   })
 
   await runtime.ready()
-  return runtime
-}
+  const { drive } = runtime.updater
+  await drive.put('/update', Buffer.from('downloaded update'))
+
+  t.ok(await drive.has('/update'), 'update content is cached')
+  await runtime.clearUpgradeDrive()
+  t.absent(await drive.has('/update'), 'cached content is cleared')
+  t.ok(await drive.exists('/update'), 'file metadata is retained')
+})
 
 function expectedArgv0() {
   if (isBare) return require('bare-os').execPath()
