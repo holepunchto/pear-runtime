@@ -2,6 +2,7 @@ const PearRuntime = require('..')
 const test = require('brittle')
 const path = require('path')
 const { isBare } = require('which-runtime')
+const Corestore = require('corestore')
 
 test('worker echo', (t) => {
   t.plan(2)
@@ -35,6 +36,37 @@ test('worker argvs', async (t) => {
   const argv = JSON.parse((await message).toString())
 
   t.alike(argv, [expectedArgv0(), specifier, 'test'])
+})
+
+test('clear upgrade drive', async (t) => {
+  const dir = await t.tmp()
+  const store = new Corestore(dir)
+  const core = store.get({ name: 'upgrade' })
+  await core.ready()
+  const upgrade = 'pear://' + core.key.toString('hex')
+  await core.close()
+
+  const runtime = new PearRuntime({
+    dir,
+    store,
+    swarm: { destroy: () => Promise.resolve() },
+    upgrade,
+    name: 'app',
+    updates: false
+  })
+  t.teardown(async () => {
+    await runtime.close()
+    await store.close()
+  })
+
+  await runtime.ready()
+  const { drive } = runtime.updater
+  await drive.put('/update', Buffer.from('downloaded update'))
+
+  t.ok(await drive.has('/update'), 'update content is cached')
+  await runtime.clearUpgradeDrive()
+  t.absent(await drive.has('/update'), 'cached content is cleared')
+  t.ok(await drive.exists('/update'), 'file metadata is retained')
 })
 
 function expectedArgv0() {

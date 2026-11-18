@@ -47,6 +47,11 @@ module.exports = class PearRuntime extends ReadyResource {
     if (!this.opts.store) await this.store.close()
   }
 
+  async clearUpgradeDrive() {
+    await this.ready()
+    return this.updater.drive.clearAll()
+  }
+
   run(entrypoint, args = [], opts = {}) {
     return this.constructor.run(entrypoint, args, opts)
   }
